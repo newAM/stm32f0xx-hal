@@ -351,12 +351,14 @@ where
     }
 
     fn set_send_only(&mut self) {
+        while self.spi.sr.read().bsy().is_busy() {}
         self.spi
             .cr1
             .modify(|_, w| w.bidimode().set_bit().bidioe().set_bit());
     }
 
     fn set_bidi(&mut self) {
+        while self.spi.sr.read().bsy().is_busy() {}
         self.spi
             .cr1
             .modify(|_, w| w.bidimode().clear_bit().bidioe().clear_bit());
